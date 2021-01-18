@@ -76,4 +76,3 @@ D:\FlashpointSecureTools\FlashpointSecurePlayer\obj\Release\FlashpointSecurePlay
 D:\FlashpointSecureTools\FlashpointSecurePlayer\obj\Release\FlashpointSecurePlayer.csproj.CopyComplete
 D:\FlashpointSecureTools\FlashpointSecurePlayer\obj\Release\FlashpointSecurePlayer.exe
 D:\FlashpointSecureTools\FlashpointSecurePlayer\obj\Release\FlashpointSecurePlayer.pdb
-D:\FlashpointSecureTools\FlashpointSecurePlayer\obj\Release\FlashpointSecurePlayer.csprojAssemblyReference.cache

@@ -220,7 +220,7 @@ namespace FlashpointSecurePlayer {
             keyValueName = keyValueName.ToUpperInvariant() + "\\";
 
             if (keyValueName.IndexOf("HKEY_LOCAL_MACHINE\\SOFTWARE\\CLASSES\\") == 0) {
-                keyValueName = "HKEY_CURRENT_USER\\SOFTWARE\\CLASSES\\" + keyValueName.Substring(27);
+                keyValueName = "HKEY_CURRENT_USER\\SOFTWARE\\CLASSES\\" + keyValueName.Substring(36);
             }
 
             keyValueName = RemoveTrailingSlash(keyValueName);
