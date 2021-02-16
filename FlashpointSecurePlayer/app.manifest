@@ -16,6 +16,8 @@
             Remove this element if your application requires this virtualization for backwards
             compatibility.
         -->
+		<!-- We intentionally omit requestedExecutionLevel so that FlashpointSecurePlayer, and ActiveX controls running inside it, will be influenced by registry virtualization -->
+		<!-- We detect inability to write to HKLM (virtualization disabled and/or removed from OS) and request administrator only if we find we cannot -->
       </requestedPrivileges>
     </security>
   </trustInfo>

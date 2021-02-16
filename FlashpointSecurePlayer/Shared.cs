@@ -689,6 +689,19 @@ namespace FlashpointSecurePlayer {
                             }
                         }
 
+                        [ConfigurationProperty("writeHKLM", DefaultValue = false, IsRequired = false)]
+                        public bool WriteHKLM
+                        {
+                            get
+                            {
+                                return (bool)base["writeHKLM"];
+                            }
+                            set
+                            {
+                                base["writeHKLM"] = value;
+                            }
+                        }
+
                         public class EnvironmentVariablesElementCollection : TemplatesConfigurationElementCollection {
                             public class EnvironmentVariablesElement : ConfigurationElement {
                                 protected ConfigurationPropertyCollection _properties = null;
@@ -1375,6 +1388,23 @@ namespace FlashpointSecurePlayer {
             } catch (NullReferenceException) {
                 return false;
             }
+        }
+
+        public static bool TestCanWriteHKLM()
+        {
+            try
+            {
+                Registry.LocalMachine.CreateSubKey("Software\\FlashpointSecurePlayer").SetValue("TestWriteHKLM", 1);
+            }
+            catch (SecurityException)
+            {
+                return false;
+            }
+            catch(UnauthorizedAccessException)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static void HandleAntecedentTask(Task antecedentTask) {

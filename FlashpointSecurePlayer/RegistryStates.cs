@@ -978,6 +978,21 @@ namespace FlashpointSecurePlayer {
                     registryView = RegistryView.Registry64;
                 }
 
+                if(!modificationsElement.WriteHKLM)
+                {
+                    for (int i = 0; i < modificationsElement.RegistryStates.Count; i++)
+                    {
+                        registryStateElement = modificationsElement.RegistryStates.Get(i) as RegistryStateElement;
+                        if (registryStateElement == null) continue;
+                        if(GetUserKeyValueName(registryStateElement.KeyName).StartsWith("HKEY_LOCAL_MACHINE")) {
+                            Deactivate();
+                            throw new System.Configuration.ConfigurationErrorsException("Writes to HKLM other than to HKLM\\Software\\Classes require setting writeHKLM");
+                        }
+                    }
+
+                }
+
+
                 ProgressManager.CurrentGoal.Start(modificationsElement.RegistryStates.Count + modificationsElement.RegistryStates.Count);
 
                 try {

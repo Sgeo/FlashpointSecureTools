@@ -34,6 +34,7 @@ namespace FlashpointSecurePlayer {
         private Mutex applicationMutex = null;
 
         private readonly RunAsAdministrator runAsAdministrator;
+        private readonly WriteHKLM writeHKLM;
         private readonly EnvironmentVariables environmentVariables;
         private readonly DownloadsBefore downloadsBefore;
         private readonly RegistryStates registryState;
@@ -50,6 +51,7 @@ namespace FlashpointSecurePlayer {
         private string Arguments { get; set; } = String.Empty;
         private MODIFICATIONS_REVERT_METHOD ModificationsRevertMethod { get; set; } = MODIFICATIONS_REVERT_METHOD.CRASH_RECOVERY;
         private bool RunAsAdministratorModification { get; set; } = false;
+        private bool WriteHKLMModification { get; set; } = false;
         private List<string> DownloadsBeforeModificationNames { get; set; } = null;
 
         private delegate void ErrorDelegate(string text);
@@ -79,6 +81,7 @@ namespace FlashpointSecurePlayer {
             }
 
             runAsAdministrator = new RunAsAdministrator(this);
+            writeHKLM = new WriteHKLM(this);
             environmentVariables = new EnvironmentVariables(this);
             downloadsBefore = new DownloadsBefore(this);
             registryState = new RegistryStates(this);
@@ -670,6 +673,10 @@ namespace FlashpointSecurePlayer {
                                 if (modificationsElement.RunAsAdministrator) {
                                     RunAsAdministratorModification = true;
                                 }
+                                if (modificationsElement.WriteHKLM)
+                                {
+                                    WriteHKLMModification = true;
+                                }
 
                                 if (modificationsElement.DownloadsBefore.Count > 0) {
                                     ModificationsElement.DownloadBeforeElementCollection.DownloadBeforeElement downloadsBeforeElement = null;
@@ -702,6 +709,21 @@ namespace FlashpointSecurePlayer {
                             LogExceptionToLauncher(ex);
                             errorDelegate(Properties.Resources.ConfigurationFailedLoad);
                         } catch (TaskRequiresElevationException ex) {
+                            LogExceptionToLauncher(ex);
+                            AskLaunchAsAdministratorUser();
+                        }
+
+                        try
+                        {
+                            writeHKLM.Activate(TemplateName, WriteHKLMModification);
+                        }
+                        catch (System.Configuration.ConfigurationErrorsException ex)
+                        {
+                            LogExceptionToLauncher(ex);
+                            errorDelegate(Properties.Resources.ConfigurationFailedLoad);
+                        }
+                        catch (TaskRequiresElevationException ex)
+                        {
                             LogExceptionToLauncher(ex);
                             AskLaunchAsAdministratorUser();
                         }
