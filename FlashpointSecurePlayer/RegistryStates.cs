@@ -219,8 +219,15 @@ namespace FlashpointSecurePlayer {
 
             keyValueName = keyValueName.ToUpperInvariant() + "\\";
 
+            // https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-virtualization
+            // Registry virtualization does not apply to HKEY_LOCAL_MACHINE\Software\Classes, HKEY_LOCAL_MACHINE\Software\Microsoft\Windows, HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT
+
+
             if (keyValueName.IndexOf("HKEY_LOCAL_MACHINE\\SOFTWARE\\CLASSES\\") == 0) {
                 keyValueName = "HKEY_CURRENT_USER\\SOFTWARE\\CLASSES\\" + keyValueName.Substring(36);
+            } else if(keyValueName.IndexOf("HKEY_LOCAL_MACHINE\\SOFTWARE\\MICROSOFT\\WINDOWS") == 0) // Should cover both second and third case, as " NT" at the end should count in the conditional
+            {
+                keyValueName = "HKEY_CURRENT_USER\\SOFTWARE\\MICROSOFT\\WINDOWS" + keyValueName.Substring(44);
             }
 
             keyValueName = RemoveTrailingSlash(keyValueName);
